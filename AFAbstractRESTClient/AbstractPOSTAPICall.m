@@ -13,7 +13,7 @@
 
 @implementation AbstractPOSTAPICall
 
-- (void) executeAPICallWithSuccessBlock:(void (^)(id responseObject)) blockSuccess failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) blockFailure progress: (void (^)(long long totalBytesWritten, long long totalBytesExpectedToWrite)) blockProgress {
+- (void) executeAPICallWithSuccessBlock:(void (^)(NSHTTPURLResponse *response, id responseObject)) blockSuccess failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) blockFailure progress: (void (^)(long long totalBytesWritten, long long totalBytesExpectedToWrite)) blockProgress {
     NETWORK_ON;
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kServerURLString]];
@@ -36,10 +36,12 @@
             NSString *responseString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
             NSLog(@"AbstractPOSTAPICall SUCCESS with URL: %@\n body:%@\n", request.URL, responseString);
             
-            [self parseResponseData:[NSJSONSerialization JSONObjectWithData:responseObject options:kNilOptions error:nil] withCompletionBlockSuccess:blockSuccess];
+            [self parseResponseData:[NSJSONSerialization JSONObjectWithData:responseObject options:kNilOptions error:nil] withCompletionBlockSuccess:^(id responseObject){
+                blockSuccess([operation response], responseObject);
+            }];
         } else {
             NSLog(@"AbstractPOSTAPICall SUCCESS with URL: %@\nbody empty", request.URL);
-            if (blockSuccess) blockSuccess(responseObject);
+            if (blockSuccess) blockSuccess([operation response], responseObject);
         }
 
         NETWORK_OFF;

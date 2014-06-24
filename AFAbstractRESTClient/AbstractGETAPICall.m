@@ -12,7 +12,7 @@
 
 @implementation AbstractGETAPICall
 
-- (void) executeAPICallWithSuccessBlock:(void (^)(id responseObject)) blockSuccess failure:(void (^)(NSError *error, id responseObject)) blockFailure {
+- (void) executeAPICallWithSuccessBlock:(void (^)(NSHTTPURLResponse *response, id responseObject)) blockSuccess failure:(void (^)(NSError *error, id responseObject)) blockFailure {
     NETWORK_ON;
     
     NSDictionary *params = [self queryParams];
@@ -26,7 +26,7 @@
             
             NSLog(@"AbstractGETAPICall SUCCESS with URL: %@\n body:%@\n", request.URL, JSON);
             
-            if (blockSuccess != nil) blockSuccess(JSON);
+            if (blockSuccess != nil) blockSuccess(response, JSON);
             
             NETWORK_OFF;
             
