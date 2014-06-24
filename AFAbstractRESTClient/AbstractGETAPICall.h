@@ -10,6 +10,6 @@
 
 @interface AbstractGETAPICall : NSObject
 
-- (void) executeAPICallWithSuccessBlock:(void (^)(id responseObject)) blockSuccess failure:(void (^)(NSError *error, id responseObject)) blockFailure;
+- (void) executeAPICallWithSuccessBlock:(void (^)(NSHTTPURLResponse *response, id responseObject)) blockSuccess failure:(void (^)(NSError *error, id responseObject)) blockFailure;
 
 @end
