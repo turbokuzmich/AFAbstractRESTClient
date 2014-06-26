@@ -12,7 +12,7 @@
 
 @implementation AbstractGETAPICall
 
-- (void) executeAPICallWithSuccessBlock:(void (^)(NSHTTPURLResponse *response, id responseObject)) blockSuccess failure:(void (^)(NSError *error, id responseObject)) blockFailure {
+- (void) executeAPICallWithSuccessBlock:(void (^)(NSHTTPURLResponse *response, id responseObject)) blockSuccess failure:(void (^)(NSError *error, NSHTTPURLResponse *response, id responseObject)) blockFailure {
     NETWORK_ON;
     
     NSDictionary *params = [self queryParams];
@@ -38,7 +38,7 @@
         NSLog(@"executeAPICall FAILURE body: %@\n\n", [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]);
         NSLog(@"executeAPICall FAILURE error: %@\n",error);
         
-        if (blockFailure != nil) blockFailure(error, JSON);
+        if (blockFailure != nil) blockFailure(error, response, JSON);
 
         NETWORK_OFF;
         

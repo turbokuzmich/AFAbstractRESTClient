@@ -13,6 +13,6 @@ extern NSString *const kServerURLString;
 
 @interface AbstractPOSTAPICall : NSObject
 
-- (void) executeAPICallWithSuccessBlock:(void (^)(NSHTTPURLResponse *response, id responseObject)) blockSuccess failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) blockFailure progress: (void (^)(long long totalBytesWritten, long long totalBytesExpectedToWrite)) blockProgress;
+- (void) executeAPICallWithSuccessBlock:(void (^)(NSHTTPURLResponse *response, id responseObject)) blockSuccess failure:(void (^)(AFHTTPRequestOperation *operation, NSHTTPURLResponse *response, NSError *error)) blockFailure progress: (void (^)(long long totalBytesWritten, long long totalBytesExpectedToWrite)) blockProgress;
 
 @end

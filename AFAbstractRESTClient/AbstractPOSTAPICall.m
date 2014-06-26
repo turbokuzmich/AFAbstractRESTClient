@@ -13,7 +13,7 @@
 
 @implementation AbstractPOSTAPICall
 
-- (void) executeAPICallWithSuccessBlock:(void (^)(NSHTTPURLResponse *response, id responseObject)) blockSuccess failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) blockFailure progress: (void (^)(long long totalBytesWritten, long long totalBytesExpectedToWrite)) blockProgress {
+- (void) executeAPICallWithSuccessBlock:(void (^)(NSHTTPURLResponse *response, id responseObject)) blockSuccess failure:(void (^)(AFHTTPRequestOperation *operation, NSHTTPURLResponse *response, NSError *error)) blockFailure progress: (void (^)(long long totalBytesWritten, long long totalBytesExpectedToWrite)) blockProgress {
     NETWORK_ON;
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kServerURLString]];
@@ -52,7 +52,7 @@
         NSLog(@"executeAPICall FAILURE body: %@\n\n", [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]);
         NSLog(@"executeAPICall FAILURE error: %@\n",error);
         
-        if (blockFailure) blockFailure(operation, error);
+        if (blockFailure) blockFailure(operation, [operation response], error);
 
         NETWORK_OFF;
         
